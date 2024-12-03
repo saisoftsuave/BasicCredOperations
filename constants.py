@@ -1,6 +1,0 @@
-baseUrl : str = "/api/v1"
-login : str = baseUrl + "/login"
-signup : str = baseUrl+ "/signup"
-users : str = baseUrl + "/users"
-deleteUser = baseUrl + "/delete/{user_id}"
-updateUser = baseUrl + "/update"

@@ -1,0 +1,7 @@
+BASE_URL : str = "/api/v1"
+AUTH_URL : str ="/auth"
+LOGIN : str = "/login"
+SIGNUP : str = "/signup"
+FETCH_LIST_OF_USERS : str = "/users"
+DELETE_USER = "/delete/{user_id}"
+UPDATE_USER = "/update"
