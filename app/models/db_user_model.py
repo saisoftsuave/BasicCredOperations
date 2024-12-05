@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Boolean
 
 from app.database import Base
 
@@ -10,5 +10,5 @@ class DbUser(Base):
     lastName = Column(String, index=True)
     email = Column(String, index=True)
     password = Column(String, index=True)
-    jwt_token = Column(String, index=True)
+    is_verified = Column(Boolean,index=True)
 

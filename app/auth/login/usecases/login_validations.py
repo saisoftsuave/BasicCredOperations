@@ -1,5 +1,6 @@
 import re
 
+from app.models.user_models import SignUp
 
 
 def validate_email(email : str) :
@@ -19,3 +20,17 @@ def validate_password(password: str) -> str | bool:
         return "Password should contain least one special character"
 
     return True
+
+def signup_validation(user_details : SignUp) -> str | bool:
+    password_validation = validate_password(user_details.password)
+    if not validate_email(user_details.email):
+        return "Invalid email formate"
+    elif len(user_details.firstName) == 0:
+        return "first name should not empty"
+    elif len(user_details.lastName) == 0:
+        return "last name should not empty"
+    elif type(password_validation) == str:
+        return password_validation
+    else:
+        return True
+

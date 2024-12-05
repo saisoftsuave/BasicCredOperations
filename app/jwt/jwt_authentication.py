@@ -1,31 +1,44 @@
 from datetime import timedelta, datetime
 
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from sqlalchemy.util import deprecated
 
-SECRET_KEY ="123FHKHSDFAFKHADOI239804"
+from app.exceptions.authentication_exeptions import TokenValidationException
+
+SECRET_KEY = "123FHKHSDFAFKHADOI239804"
 HASHING_ALGORITH = "HS256"
 
-bcrypt_context = CryptContext(schemes=["bcrypt"],deprecated = "auto")
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_barrier = OAuth2PasswordBearer("auth/token")
+
 
 class Token(BaseModel):
-    token : str
-    type : str
+    access_token: str
+    type_type: str
 
-def encrypt_password(password : str):
+
+def encrypt_password(password: str):
     return bcrypt_context.hash(password)
 
-def verify_password(plain_password : str,encrypted_password : str) :
-    return bcrypt_context.verify(plain_password,encrypted_password)
 
-def create_jwt_token(email: str, expires: timedelta):
+def verify_password(plain_password: str, encrypted_password: str):
+    return bcrypt_context.verify(plain_password, encrypted_password)
+
+
+def create_jwt_token(id: str, expires: timedelta):
     expiration = datetime.utcnow() + expires
     data = {
-        "email": email,
-        "exp": expiration.timestamp()
+        "id": id,
+        "exp": expiration
     }
     return jwt.encode(data, SECRET_KEY, algorithm=HASHING_ALGORITH)
 
-
+def get_uuid_from_jwt(token : str):
+    payload = jwt.decode(token,SECRET_KEY,algorithms=HASHING_ALGORITH)
+    print(token)
+    uuid = payload.get("id")
+    if uuid is None:
+        raise TokenValidationException()
+    return uuid
