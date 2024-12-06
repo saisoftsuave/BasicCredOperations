@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 from app.core.exceptions.authentication_exeptions import TokenValidationException
 
-SECRET_KEY = os.getenv('SECRET_KEY',"1234567890492843haksdh8yqnwer")
-HASHING_ALGORITH = os.getenv('HASHING_ALGORITH',"HS256")
+SECRET_KEY = os.getenv('SECRET_KEY')
+HASHING_ALGORITH = os.getenv('HASHING_ALGORITH')
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_barrier = OAuth2PasswordBearer("auth/token")
