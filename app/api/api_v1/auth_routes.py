@@ -2,14 +2,14 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.auth.common.constants import FETCH_LIST_OF_USERS, AUTH_URL, SIGNUP, LOGIN, DELETE_USER, VERIFY_EMAIL
-from app.auth.login.models.login_model import Login
-from app.auth.login.usecases.login_validations import validate_email, validate_password, signup_validation
+from app.core.constants import FETCH_LIST_OF_USERS, AUTH_URL, SIGNUP, LOGIN, DELETE_USER, VERIFY_EMAIL
+from app.models.login_model import Login
+from app.services.login_validations import signup_validation
 from app.core.email_service import request_verification
 from app.database import get_db
-from app.exceptions.authentication_exeptions import UserExistedException, DatabaseOperationException
+from app.core.exceptions.authentication_exeptions import UserExistedException, DatabaseOperationException
 from app.models.db_user_model import DbUser
-from app.jwt.jwt_authentication import verify_password, create_jwt_token, get_uuid_from_jwt
+from app.core.jwt.jwt_authentication import verify_password, create_jwt_token, get_uuid_from_jwt
 from app.models.user_models import SignUp
 from app.services.auth_service import create_user, is_existing_user
 

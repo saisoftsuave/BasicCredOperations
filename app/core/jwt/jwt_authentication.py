@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta, datetime
 
 from fastapi.security import OAuth2PasswordBearer
@@ -5,10 +6,10 @@ from jose import jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
-from app.exceptions.authentication_exeptions import TokenValidationException
+from app.core.exceptions.authentication_exeptions import TokenValidationException
 
-SECRET_KEY = "123FHKHSDFAFKHADOI239804"
-HASHING_ALGORITH = "HS256"
+SECRET_KEY = os.getenv('SECRET_KEY',"1234567890492843haksdh8yqnwer")
+HASHING_ALGORITH = os.getenv('HASHING_ALGORITH',"HS256")
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_barrier = OAuth2PasswordBearer("auth/token")

@@ -1,22 +1,23 @@
-from http.client import HTTPException
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
-
+from fastapi import FastAPI
 from app.models import db_user_model
-from app.auth.common.constants import DELETE_USER, UPDATE_USER, BASE_URL
-from app.auth.routes.auth_routes import auth_router
+from app.core.constants import BASE_URL
+from app.api.api_v1.auth_routes import auth_router
 from app.database import engine
-from app.models.user_models import User
-from users import users as listOfUsers
 
-app = FastAPI(root_path=BASE_URL)
+
+@asynccontextmanager
+async def lifespan(app : FastAPI):
+    db_user_model.Base.metadata.create_all(bind=engine)
+    yield
+
+
+app = FastAPI(root_path=BASE_URL, lifespan=lifespan)
 
 app.include_router(router=auth_router, tags=["auth"])
 
-
-#db_user_model.Base.metadata.drop_all(bind=engine)
-
-db_user_model.Base.metadata.create_all(bind=engine)
+# db_user_model.Base.metadata.drop_all(bind=engine)
 
 
 # @app.delete(DELETE_USER)

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from app.exceptions.authentication_exeptions import DatabaseOperationException
-from app.jwt.jwt_authentication import encrypt_password
+from app.core.exceptions.authentication_exeptions import DatabaseOperationException
+from app.core.jwt.jwt_authentication import encrypt_password
 from app.models import db_user_model
 from app.models.user_models import User
 
