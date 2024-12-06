@@ -28,7 +28,7 @@ def user_signup(userDetails: SignUp, db: Session = Depends(get_db)):
     if type(validate_signup_details) == str:
         return validate_signup_details
     elif is_existing_user(userDetails.email, db):
-        return UserExistedException(payload="You have an existing account!, Please LOGIN")
+        raise UserExistedException(payload="You have an existing account!, Please LOGIN")
     else:
         create_user(userDetails, db)
         token = create_jwt_token(userDetails.id, timedelta(minutes=10))

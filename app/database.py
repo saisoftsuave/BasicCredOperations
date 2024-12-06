@@ -5,8 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 
 load_dotenv()
-#DATABASE_URL = os.getenv('DATABASE_URL','postgresql://softsuave:softsuave@localhost:5432/usersdb')
-DATABASE_URL = "postgresql://postgres:softsuave@localhost:5432/CrudOperations"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 LocalSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -19,6 +18,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-

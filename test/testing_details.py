@@ -1,3 +1,7 @@
+from sqlalchemy.orm import Session
+
+from app.models.db_user_model import DbUser
+
 signup_request_valid_1 = {
     "id": "9825855d-f883-47dd-a776-28708e237313",
     "firstName": "John",
@@ -39,21 +43,33 @@ signup_request_invalid_4 = {
 }
 
 login_valid_1 = {
-  "email": "john.doe@example.com",
-  "password": "StrongPass123!"
+    "email": "john.doe@example1.com",
+    "password": "StrongPass123!"
 }
 
 login_invalid_1 = {
-  "email": "invalid-email",
-  "password": "StrongPass123!"
+    "email": "invalid-email",
+    "password": "StrongPass123!"
 }
 
 login_invalid_2 = {
-  "email": "john.doe@example.com",
-  "password": ""
+    "email": "john.doe@example.com",
+    "password": ""
 }
 
 login_invalid_3 = {
-  "email": "",
-  "password": "StrongPass123!"
+    "email": "",
+    "password": "StrongPass123!"
 }
+
+
+def setup_record(db: Session):
+    record = DbUser(id="9825855d-f883-47dd-a776-28708e237343",
+                    firstName="John",
+                    lastName="Doe",
+                    email="john.doe@example1.com",
+                    password="StrongPass123!",
+                    is_verified= True)
+    db.add(record)
+    db.commit()
+    db.refresh(record)

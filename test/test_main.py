@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import status
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
@@ -7,9 +10,10 @@ from app.core.constants import FETCH_LIST_OF_USERS, AUTH_URL, BASE_URL, SIGNUP, 
 from app.database import get_db, Base
 from app.main import app
 from test.testing_details import signup_request_valid_1, signup_request_invalid_1, signup_request_invalid_3, \
-    login_valid_1
+    login_valid_1, setup_record
 
-DATABASE_URL = "sqlite:///:memory:"
+load_dotenv()
+DATABASE_URL = os.getenv('TEST_DATABASE_URL')
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False}, poolclass=StaticPool)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -19,6 +23,7 @@ clint = TestClient(app)
 def override_get_db():
     db = TestingSessionLocal()
     setup_db()
+    setup_record(db)
     try:
         yield db
     finally:
@@ -39,7 +44,7 @@ def test_signup_user():
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {
         "message": "registration successful! Please verify email",
-        "user": f"${signup_request_valid_1.get("firstName") + signup_request_invalid_1.get("lastName")}"
+        "user": f"${signup_request_valid_1.get("firstName") + signup_request_valid_1.get("lastName")}"
     }
 
 
@@ -56,6 +61,8 @@ def test_signup_user_invalid_password():
 def test_login_user():
     response = clint.post(url=AUTH_URL + LOGIN, json=login_valid_1)
     assert response.status_code == status.HTTP_200_OK
+    assert response.json() ==""
+
 
 def setup_db():
     Base.metadata.create_all(bind=engine)
