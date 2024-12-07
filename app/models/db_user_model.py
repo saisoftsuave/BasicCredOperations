@@ -11,3 +11,4 @@ class DbUser(Base):
     email = Column(String, index=True)
     password = Column(String, index=True)
     is_verified = Column(Boolean,index=True)
+    
