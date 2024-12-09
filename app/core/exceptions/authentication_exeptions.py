@@ -73,3 +73,5 @@ class InvalidPasswordFormateException(HTTPException):
                 "email": message
             }
         )
+
+
